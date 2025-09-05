@@ -163,7 +163,7 @@ export default function Dashboard() {
                 ) : (
                   <div className="space-y-4">
                     {content.slice(0, 5).map((article) => (
-                      <div key={article._id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-accent transition-colors">
+                      <Link to={`/content/${article._id}`} key={article._id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-accent transition-colors">
                         {article.featuredImage && (
                           <img 
                             src={article.featuredImage} 
@@ -197,7 +197,7 @@ export default function Dashboard() {
                             ))}
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 )}

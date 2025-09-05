@@ -28,7 +28,7 @@ import {
 export default function CreateContent() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [aiAnalysis, setAiAnalysis] = useState<any>(null);
+  const [aiAnalysis, setAiAnalysis] = useState<null | { wordCount?: number; readingTime?: number; autoTags?: string[]; suggestedCategory?: string }>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   
   const {
@@ -45,6 +45,7 @@ export default function CreateContent() {
   });
 
   const watchedBody = watch('body');
+  const watchedTags = watch('tags') || [];
 
   // AI Analysis
   const analyzeContent = async () => {
@@ -98,10 +99,11 @@ export default function CreateContent() {
       });
       navigate('/');
     },
-    onError: (error: any) => {
+    onError: async (error: unknown) => {
+      const { getErrorMessage } = await import('@/lib/utils');
       toast({
         title: "Failed to create content",
-        description: error.response?.data?.message || "Something went wrong.",
+        description: getErrorMessage(error, "Something went wrong."),
         variant: "destructive",
       });
     },
@@ -252,6 +254,7 @@ export default function CreateContent() {
                     <Badge variant="secondary" className="bg-primary/10 text-primary">
                       {aiAnalysis.suggestedCategory}
                     </Badge>
+                    <p className="text-xs text-muted-foreground mt-1">Your post may be categorized like this automatically.</p>
                   </div>
                   
                   <div>
@@ -265,6 +268,20 @@ export default function CreateContent() {
                           {tag}
                         </Badge>
                       ))}
+                    </div>
+                    <div className="mt-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          const unique = Array.from(new Set([...(watchedTags || []), ...((aiAnalysis.autoTags as string[]) || [])]));
+                          setValue('tags', unique);
+                          toast({ title: 'Tags applied', description: 'AI suggested tags added to your post.' });
+                        }}
+                      >
+                        Add suggested tags
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

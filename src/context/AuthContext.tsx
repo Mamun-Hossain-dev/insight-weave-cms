@@ -60,16 +60,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const response = await api.post('/auth/login', { email, password });
     if (response.data.status) {
       const { accessToken, user: userData } = response.data.data;
-      Cookies.set('accessToken', accessToken, { expires: 7 });
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken, { expires: 7 });
+      }
       setUser(userData);
+      return;
     }
+    throw new Error('Login failed');
   };
 
   const register = async (name: string, email: string, password: string) => {
     const response = await api.post('/auth/register', { name, email, password });
     if (response.data.status) {
-      setUser(response.data.data);
+      // API returns created profile, but not necessarily tokens. Do not set user here to force login flow.
+      return;
     }
+    throw new Error('Registration failed');
   };
 
   const logout = () => {

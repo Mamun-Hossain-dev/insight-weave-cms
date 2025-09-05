@@ -24,7 +24,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigationItems = [
     { name: 'Dashboard', href: '/', icon: Home },
     { name: 'Create Content', href: '/create', icon: PenTool },
-    { name: 'Analytics', href: '/analytics', icon: TrendingUp },
+    { name: 'Browse', href: '/content', icon: TrendingUp },
     { name: 'Profile', href: '/profile', icon: User },
   ];
 
@@ -61,6 +61,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </Link>
               );
             })}
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin/creator-requests"
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+                  location.pathname.startsWith('/admin/creator-requests')
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                }`}
+              >
+                <span className="text-sm font-medium">Creator Requests</span>
+              </Link>
+            )}
           </nav>
 
           <div className="flex items-center space-x-4">
@@ -77,6 +89,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <div className="text-sm font-medium">{user.name}</div>
                   <div className="text-xs text-muted-foreground capitalize">{user.role}</div>
                 </div>
+                {user.role === 'reader' && (
+                  <Link
+                    to="/creator/request"
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      location.pathname.startsWith('/creator/request')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    }`}
+                  >
+                    Become a Creator
+                  </Link>
+                )}
                 <Button
                   variant="outline"
                   size="sm"

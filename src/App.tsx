@@ -10,6 +10,14 @@ import Register from "./pages/Register";
 import CreateContent from "./pages/CreateContent";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ChangePassword from "./pages/ChangePassword";
+import ContentDetail from "./pages/ContentDetail";
+import UserContent from "./pages/UserContent";
+import AdminCreatorRequests from "./pages/AdminCreatorRequests";
+import ContentEdit from "./pages/ContentEdit";
+import ContentList from "./pages/ContentList";
+import CreatorRequest from "./pages/CreatorRequest";
 
 const queryClient = new QueryClient();
 
@@ -72,14 +80,42 @@ const App = () => (
                 <Register />
               </PublicRoute>
             } />
+            <Route path="/forgot-password" element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            } />
             <Route path="/create" element={
               <ProtectedRoute>
                 <CreateContent />
               </ProtectedRoute>
             } />
+            <Route path="/creator/request" element={
+              <ProtectedRoute>
+                <CreatorRequest />
+              </ProtectedRoute>
+            } />
+            <Route path="/content/:id" element={<ContentDetail />} />
+            <Route path="/content" element={<ContentList />} />
+            <Route path="/content/:id/edit" element={
+              <ProtectedRoute>
+                <ContentEdit />
+              </ProtectedRoute>
+            } />
+            <Route path="/users/:userId/content" element={<UserContent />} />
             <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/creator-requests" element={
+              <ProtectedRoute>
+                <AdminCreatorRequests />
+              </ProtectedRoute>
+            } />
+            <Route path="/change-password" element={
+              <ProtectedRoute>
+                <ChangePassword />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

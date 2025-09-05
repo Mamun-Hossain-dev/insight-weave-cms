@@ -31,11 +31,13 @@ export default function Register() {
         title: "Account created!",
         description: "Welcome to ContentHub. You can now start creating content.",
       });
-      navigate('/');
-    } catch (error: any) {
+      // After registration, tokens may not be issued. Redirect to login.
+      navigate('/login');
+    } catch (error: unknown) {
+      const { getErrorMessage } = await import('@/lib/utils');
       toast({
         title: "Registration failed",
-        description: error.response?.data?.message || "Something went wrong. Please try again.",
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     }

@@ -32,10 +32,11 @@ export default function Login() {
         description: "You have been logged in successfully.",
       });
       navigate('/');
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const { getErrorMessage } = await import('@/lib/utils');
       toast({
         title: "Login failed",
-        description: error.response?.data?.message || "Something went wrong. Please try again.",
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     }

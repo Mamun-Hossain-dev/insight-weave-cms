@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
+import { useMutation } from '@tanstack/react-query';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,10 +15,20 @@ import { updateProfileSchema, type UpdateProfileFormData } from '@/lib/schemas';
 import { useToast } from '@/hooks/use-toast';
 import api from '@/lib/api';
 import { User, Crown, Mail, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
+// useMutation already imported above
 
 export default function Profile() {
   const { user, refreshUser } = useAuth();
   const { toast } = useToast();
+  const creatorRequest = useMutation({
+    mutationFn: async () => (await api.post('/creator/request-access', { message: 'I would like to become a creator on this platform.' })).data,
+    onSuccess: () => toast({ title: 'Request sent', description: 'We will review your request shortly.' }),
+    onError: async (error: unknown) => {
+      const { getErrorMessage } = await import('@/lib/utils');
+      toast({ title: 'Failed', description: getErrorMessage(error), variant: 'destructive' });
+    },
+  });
   
   const {
     register,
@@ -44,10 +54,11 @@ export default function Profile() {
       });
       refreshUser();
     },
-    onError: (error: any) => {
+    onError: async (error: unknown) => {
+      const { getErrorMessage } = await import('@/lib/utils');
       toast({
         title: "Update failed",
-        description: error.response?.data?.message || "Something went wrong.",
+        description: getErrorMessage(error, "Something went wrong."),
         variant: "destructive",
       });
     },
@@ -149,13 +160,28 @@ export default function Profile() {
                 Request creator access to start publishing content and reach a wider audience.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Button variant="gradient" className="w-full">
-                Request Creator Access
+            <CardContent className="flex gap-2">
+              <Button variant="gradient" className="w-full" onClick={() => creatorRequest.mutate()} disabled={creatorRequest.isPending}>
+                {creatorRequest.isPending ? 'Quick Requesting...' : 'Quick Request'}
               </Button>
+              <Link to="/creator/request" className="w-full">
+                <Button variant="outline" className="w-full">Open Request Form</Button>
+              </Link>
             </CardContent>
           </Card>
         )}
+
+        <Card className="shadow-soft">
+          <CardHeader>
+            <CardTitle>Security</CardTitle>
+            <CardDescription>Manage your password and security settings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link to="/change-password">
+              <Button variant="outline" className="w-full">Change Password</Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
