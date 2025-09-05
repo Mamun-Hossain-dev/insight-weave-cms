@@ -1,0 +1,34 @@
+I have a Vite + React + Tailwind CSS project. 
+Currently my design system is very basic, using a violet gradient as primary. 
+I want to completely upgrade the **UI, color palette, and theme** to look modern, premium, and AI-inspired.
+
+Here’s what I need from you:
+
+1. **Global Design System (HSL only)**  
+   - Define new HSL color variables for background, foreground, primary, secondary, accent, muted, border, input, ring, etc.  
+   - Create gradients for primary, secondary, and hero backgrounds.  
+   - Provide soft, medium, and glowing shadow presets.  
+   - Only light mode is needed.  
+
+2. **Hover & Active Effects**  
+   - Smooth transitions for links, buttons, and cards.  
+   - Glowing hover shadows and slight scaling for interactive elements.  
+   - Active state should have a subtle pressed/scale-down effect.  
+
+3. **Reusable UI Components** (React + Tailwind examples)  
+   - A futuristic **Button** component (rounded, gradient background, glowing hover effect).  
+   - A **Card** component with hover glow and smooth transition.  
+   - A **Hero Section** with gradient background, bold typography, and premium AI vibe.  
+
+4. **Typography**  
+   - Suggest modern Google Fonts (like Inter or Plus Jakarta Sans).  
+   - Apply them globally for clean, futuristic UI.  
+
+5. **Integration Instructions**  
+   - Show me exactly how to replace my current `global.css` with this new theme.  
+   - Provide React component code snippets for Button, Card, and Hero section using Tailwind + the new theme variables.  
+
+⚡ Important Notes:  
+- Keep all colors in HSL format for consistency with Tailwind theming.  
+- Output should be copy-paste ready for my Vite + React + Tailwind setup.  
+- Design should give a **futuristic AI-powered vibe** with gradients, neon accents, and glowing shadows.  
