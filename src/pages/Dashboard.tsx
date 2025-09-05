@@ -1,20 +1,26 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Layout } from '@/components/Layout';
-import api from '@/lib/api';
-import { 
-  PenTool, 
-  TrendingUp, 
-  Eye, 
-  Heart, 
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Layout } from "@/components/Layout";
+import api from "@/lib/api";
+import {
+  PenTool,
+  TrendingUp,
+  Eye,
+  Heart,
   MessageCircle,
   Plus,
-  Sparkles 
-} from 'lucide-react';
+  Sparkles,
+} from "lucide-react";
 
 interface Content {
   _id: string;
@@ -31,7 +37,7 @@ interface Content {
   viewsCount: number;
   likesCount: number;
   commentsCount: number;
-  status: 'published' | 'draft';
+  status: "published" | "draft";
   createdAt: string;
   optimization: {
     wordCount: number;
@@ -52,17 +58,17 @@ interface ContentResponse {
 
 export default function Dashboard() {
   const { data: contentData, isLoading } = useQuery<ContentResponse>({
-    queryKey: ['content'],
+    queryKey: ["content"],
     queryFn: async () => {
-      const response = await api.get('/content');
+      const response = await api.get("/content");
       return response.data;
     },
   });
 
   const { data: trendingData } = useQuery({
-    queryKey: ['trending'],
+    queryKey: ["trending"],
     queryFn: async () => {
-      const response = await api.get('/analytics/trending');
+      const response = await api.get("/analytics/trending");
       return response.data;
     },
   });
@@ -74,13 +80,14 @@ export default function Dashboard() {
     <Layout>
       <div className="space-y-8">
         {/* Hero Section */}
-        <div className="bg-gradient-hero rounded-2xl p-8 text-white shadow-glow">
+        <div className="bg-gradient-hero rounded-2xl p-8 text-white shadow-glow bg-purple-800">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-bold mb-4">
               Welcome to Your Content Hub
             </h1>
             <p className="text-lg mb-6 opacity-90">
-              Create, manage, and analyze your content with AI-powered insights and beautiful analytics.
+              Create, manage, and analyze your content with AI-powered insights
+              and beautiful analytics.
             </p>
             <Link to="/create">
               <Button variant="secondary" size="lg" className="shadow-medium">
@@ -95,15 +102,21 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="shadow-soft">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Content</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Content
+              </CardTitle>
               <PenTool className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{contentData?.data.paginationInfo.totalItems || 0}</div>
-              <p className="text-xs text-muted-foreground">Published articles</p>
+              <div className="text-2xl font-bold">
+                {contentData?.data.paginationInfo.totalItems || 0}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Published articles
+              </p>
             </CardContent>
           </Card>
-          
+
           <Card className="shadow-soft">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Views</CardTitle>
@@ -113,20 +126,29 @@ export default function Dashboard() {
               <div className="text-2xl font-bold">
                 {content.reduce((sum, item) => sum + item.viewsCount, 0)}
               </div>
-              <p className="text-xs text-muted-foreground">Across all content</p>
+              <p className="text-xs text-muted-foreground">
+                Across all content
+              </p>
             </CardContent>
           </Card>
-          
+
           <Card className="shadow-soft">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Engagement</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Engagement
+              </CardTitle>
               <Heart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {content.reduce((sum, item) => sum + item.likesCount + item.commentsCount, 0)}
+                {content.reduce(
+                  (sum, item) => sum + item.likesCount + item.commentsCount,
+                  0
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">Likes and comments</p>
+              <p className="text-xs text-muted-foreground">
+                Likes and comments
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -140,7 +162,9 @@ export default function Dashboard() {
                   <PenTool className="w-5 h-5 mr-2 text-primary" />
                   Recent Content
                 </CardTitle>
-                <CardDescription>Your latest published articles</CardDescription>
+                <CardDescription>
+                  Your latest published articles
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {isLoading ? (
@@ -157,22 +181,30 @@ export default function Dashboard() {
                     <PenTool className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                     <p className="text-muted-foreground mb-4">No content yet</p>
                     <Link to="/create">
-                      <Button variant="outline">Create Your First Article</Button>
+                      <Button variant="outline">
+                        Create Your First Article
+                      </Button>
                     </Link>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {content.slice(0, 5).map((article) => (
-                      <Link to={`/content/${article._id}`} key={article._id} className="flex items-start space-x-4 p-4 rounded-lg hover:bg-accent transition-colors">
+                      <Link
+                        to={`/content/${article._id}`}
+                        key={article._id}
+                        className="flex items-start space-x-4 p-4 rounded-lg hover:bg-accent transition-colors"
+                      >
                         {article.featuredImage && (
-                          <img 
-                            src={article.featuredImage} 
+                          <img
+                            src={article.featuredImage}
                             alt={article.title}
                             className="w-16 h-16 rounded-lg object-cover"
                           />
                         )}
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium truncate">{article.title}</h3>
+                          <h3 className="font-medium truncate">
+                            {article.title}
+                          </h3>
                           <div className="flex items-center space-x-4 text-sm text-muted-foreground mt-1">
                             <span className="flex items-center">
                               <Eye className="w-3 h-3 mr-1" />
@@ -188,9 +220,15 @@ export default function Dashboard() {
                             </span>
                           </div>
                           <div className="flex items-center space-x-2 mt-2">
-                            <Badge variant="secondary">{article.category}</Badge>
+                            <Badge variant="secondary">
+                              {article.category}
+                            </Badge>
                             {article.autoTags.slice(0, 2).map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
+                              <Badge
+                                key={tag}
+                                variant="outline"
+                                className="text-xs"
+                              >
                                 <Sparkles className="w-2 h-2 mr-1" />
                                 {tag}
                               </Badge>
@@ -217,17 +255,26 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 {trending.length === 0 ? (
-                  <p className="text-muted-foreground text-sm">No trending content yet</p>
+                  <p className="text-muted-foreground text-sm">
+                    No trending content yet
+                  </p>
                 ) : (
                   <div className="space-y-4">
                     {trending.slice(0, 5).map((article: any, index: number) => (
-                      <div key={article._id} className="flex items-start space-x-3">
+                      <div
+                        key={article._id}
+                        className="flex items-start space-x-3"
+                      >
                         <div className="flex-shrink-0 w-6 h-6 bg-gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium truncate">{article.title}</h4>
-                          <p className="text-xs text-muted-foreground">by {article.author.name}</p>
+                          <h4 className="text-sm font-medium truncate">
+                            {article.title}
+                          </h4>
+                          <p className="text-xs text-muted-foreground">
+                            by {article.author.name}
+                          </p>
                           <div className="flex items-center space-x-3 text-xs text-muted-foreground mt-1">
                             <span>{article.viewsCount} views</span>
                             <span>{article.likesCount} likes</span>
